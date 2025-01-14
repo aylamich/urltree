@@ -1,0 +1,26 @@
+{
+  "canisters": {
+    "urltree_backend": {
+      "main": "src/urltree_backend/main.mo",
+      "type": "motoko"
+    },
+    "urltree_frontend": {
+      "dependencies": [
+        "urltree_backend"
+      ],
+      "source": [
+        "src/urltree_frontend/dist"
+      ],
+      "type": "assets",
+      "workspace": "urltree_frontend"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
