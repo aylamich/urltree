@@ -5,22 +5,30 @@ import { Actor } from "@dfinity/agent";
 import { AuthClient } from "@dfinity/auth-client";
 
 function App() {
+
+  const [idUrl, setIdUrl] = useState(null);
   const [nomeUrl, setNomeUrl] = useState('');
   const [linkLinkedin, setLinkLinkedin] = useState('');
   const [linkGithub, setLinkGithub] = useState('');
   const [linkInstagram, setLinkInstagram] = useState('');
   const [linkDiscord, setLinkDiscord] = useState('');
+  const [linkUrl, setLinkUrl] = useState('');
   const [carregandoSpinner, setCarregandoSpinner] = useState(false);
   const [mostrarModal, setMostrarModal] = useState(false);
 
 
-
+/*
 const adicionarLinks = async (event) => {
   event.preventDefault();
   setCarregandoSpinner(true); // botão carregando vai pro estado verdadeiro (aparece)
 
+  // fazer aqui, se for 0 vai pra editar se for null vai pra adicionar
   try {
-    await urltree_backend.adicionarUrlTree(nomeUrl, linkLinkedin, linkGithub, linkInstagram, linkDiscord);
+    let l = await urltree_backend.adicionarUrlTree(nomeUrl, linkLinkedin, linkGithub, linkInstagram, linkDiscord);
+    let comoString = String(l);
+    setLinkUrl("https://66ete-hqaaa-aaaab-qacrq-cai.icp0.io/url"+comoString);
+
+    console.log(l);
     setCarregandoSpinner(false); // Finaliza o carregamento antes de mostrar o modal
     setMostrarModal(true); // Mostra o modal
   } catch (error) {
@@ -29,6 +37,73 @@ const adicionarLinks = async (event) => {
   } finally {
     setCarregandoSpinner(false); // Finaliza o carregamento
   }
+};*/
+
+const adicionarLinks = async (event) => {
+event.preventDefault();
+  setCarregandoSpinner(true);
+
+  try {
+console.log("ID URL: ", idUrl);
+    if(idUrl === null){
+      console.log("ENTROU NO IF");
+        // Primeiro, tentamos adicionar uma nova URL
+        const resultadoAdicionar = await urltree_backend.adicionarUrlTree(nomeUrl, linkLinkedin, linkGithub, linkInstagram, linkDiscord);
+        setIdUrl(resultadoAdicionar);
+        setLinkUrl("https://66ete-hqaaa-aaaab-qacrq-cai.icp0.io/url/" + resultadoAdicionar);
+         setMostrarModal(true);
+    } else {
+      console.log("ENTROU NO ELSE");
+        // Se retornar null, significa que o usuário já tem uma URL cadastrada
+      // Neste caso, vamos tentar editar a URL existente
+      const resultadoEditar = await urltree_backend.editarUrlTree(parseInt(idUrl), 
+                                                                                   nomeUrl,
+                                                                                   linkLinkedin,
+                                                                                   linkGithub,
+                                                                                   linkInstagram,
+                                                                                   linkDiscord
+                                                                          );
+setLinkUrl("https://66ete-hqaaa-aaaab-qacrq-cai.icp0.io/url/" + idUrl);
+
+      if (resultadoEditar === null) {
+         alert('Não foi possível editar a URL. Verifique se você é o proprietário.');
+      } else {
+         // const urlEditada = resultadoEditar[0]; // Extrai o valor do Optional
+         //setLinkUrl("https://66ete-hqaaa-aaaab-qacrq-cai.icp0.io/url" + urlEditada.id);
+         setMostrarModal(true);
+        // console.log('URL editada com sucesso:', urlEditada);
+      }
+    }
+
+    
+  } catch (error) {
+    console.error('Erro ao adicionar/editar links:', error);
+    alert('Ocorreu um erro ao processar os links.');
+  } finally {
+    setCarregandoSpinner(false);
+  }
+
+    
+    
+    /*
+      
+    } else {
+      // Nova URL adicionada com sucesso
+      const id = resultadoAdicionar[0]; // Extrai o valor do Optional
+      const comoString = String(id);
+      setLinkUrl("https://66ete-hqaaa-aaaab-qacrq-cai.icp0.io/url" + comoString);
+      setMostrarModal(true);
+      console.log('Nova URL adicionada:', id);
+    }
+  } catch (error) {
+    console.error('Erro ao adicionar/editar links:', error);
+    alert('Ocorreu um erro ao processar os links.');
+  } finally {
+    setCarregandoSpinner(false);
+  }
+  */
+
+
 };
 
 
@@ -46,6 +121,10 @@ const adicionarLinks = async (event) => {
   useEffect(async () => {
     await configBackend();
     urltree_backend.retornarUrlTree().then((result) => {
+      if (result.id != 0) {
+        setIdUrl(result.id);
+      }
+
       setNomeUrl(result.nomeUrl);
       setLinkLinkedin(result.linkLinkedin);
       setLinkGithub(result.linkGithub);
@@ -68,6 +147,21 @@ const adicionarLinks = async (event) => {
       window.location.href = "/";
     }
   }
+  
+ {/*
+  const copy = async () => {
+    try {
+      alert("ENTROU NO COPY");
+      // Tentando copiar o link para a área de transferência
+      navigator.clipboard.writeText(linkUrl);
+      alert("Link copiado para a área de transferência!");
+    } catch (err) {
+      // Caso ocorra algum erro
+      console.error("Falha ao copiar o link:", err);
+      alert("Falha ao copiar o link. Tente novamente.");
+    }
+  }
+*/}
 
   return (
     <main class="flex items-center justify-center min-h-screen" style={{
@@ -125,7 +219,23 @@ const adicionarLinks = async (event) => {
       
         <button onClick={adicionarLinks} type="button"  class="text-white bg-[#8a8fa6] hover:bg-[#70758e] focus:ring-4 focus:outline-none focus:ring-[#9ca1b9] font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-[#6d7183] dark:hover:bg-[#333333]dark:focus::ring-[#222222] cursor-pointer"  disabled={carregandoSpinner}>Submit</button>
         { /* <button onClick={retornarLinks} type="button"  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Teste</button> */ }
+
+        {linkUrl && (
+        <div className="mt-5 flex items-center text-sm w-full sm:w-auto px-5 py-2.5 text-center text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert">
+          {/* Link */}
+          <a href={linkUrl} target="_blank" rel="noopener noreferrer" className="flex-grow" >
+            {linkUrl}
+          </a>
+        </div>
+        )}
+
       </form>
+{/*
+      <br/>
+      <div class="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert">
+        <a href={linkUrl} target="_blank"  >{linkUrl}</a>
+      </div>
+/*} }
 
       { /* Aparência do modal */  } 
       {mostrarModal && (

@@ -49,7 +49,6 @@ function App() {
   return (
     <main>
      
-
      <section className="bg-center bg-no-repeat bg-cover h-screen" style={{ backgroundImage: "url('/fundo.jpg')" }}>
     <div class="px-4 mx-auto max-w-screen-xl text-center py-24 lg:py-56">
         <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl">URLTREE. Make it easy for people to find you — share one single URL.</h1>

@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Index from './index';
 import CreateUrl from './createUrl';
+import Url from './url';
 
 function App(){
 
@@ -10,7 +11,7 @@ function App(){
       <Routes>
         <Route path="/" element={<Index/>} />                              
         <Route path="/createurl/" element={<CreateUrl/>} />          
-        { /* por  A rota para tela dos links*/ }      
+        <Route path="/url/:id" element={<Url/>} />     
       </Routes>
     </Router>
 
