@@ -50,7 +50,8 @@ console.log("ID URL: ", idUrl);
         // Primeiro, tentamos adicionar uma nova URL
         const resultadoAdicionar = await urltree_backend.adicionarUrlTree(nomeUrl, linkLinkedin, linkGithub, linkInstagram, linkDiscord);
         setIdUrl(resultadoAdicionar);
-        setLinkUrl("https://66ete-hqaaa-aaaab-qacrq-cai.icp0.io/url/" + resultadoAdicionar);
+        setLinkUrl("https://y4oop-liaaa-aaaab-qacha-cai.icp0.io/url/"+ resultadoAdicionar);
+        // + resultadoAdicionar
          setMostrarModal(true);
     } else {
       console.log("ENTROU NO ELSE");
@@ -63,7 +64,7 @@ console.log("ID URL: ", idUrl);
                                                                                    linkInstagram,
                                                                                    linkDiscord
                                                                           );
-setLinkUrl("https://66ete-hqaaa-aaaab-qacrq-cai.icp0.io/url/" + idUrl);
+      setLinkUrl("https://66ete-hqaaa-aaaab-qacrq-cai.icp0.io/url/" + idUrl);
 
       if (resultadoEditar === null) {
          alert('Não foi possível editar a URL. Verifique se você é o proprietário.');
@@ -119,10 +120,13 @@ setLinkUrl("https://66ete-hqaaa-aaaab-qacrq-cai.icp0.io/url/" + idUrl);
   }
 
   useEffect(async () => {
+    setCarregandoSpinner(true);
     await configBackend();
-    urltree_backend.retornarUrlTree().then((result) => {
+    await urltree_backend.retornarUrlTree().then((result) => {
       if (result.id != 0) {
+        console.log("ID: ", result.id);
         setIdUrl(result.id);
+        setLinkUrl("https://66ete-hqaaa-aaaab-qacrq-cai.icp0.io/url/" + result.id);
       }
 
       setNomeUrl(result.nomeUrl);
@@ -133,6 +137,7 @@ setLinkUrl("https://66ete-hqaaa-aaaab-qacrq-cai.icp0.io/url/" + idUrl);
     }).catch((error) => {
       console.error('Erro ao obter os dados:', error);
     });
+    setCarregandoSpinner(false);
   }, []);
 
   async function configBackend() {

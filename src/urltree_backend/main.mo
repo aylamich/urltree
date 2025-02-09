@@ -3,6 +3,8 @@ import Hash "mo:base/Hash";
 import Text "mo:base/Text";
 import Principal "mo:base/Principal";
 import Nat "mo:base/Nat";
+import Iter "mo:base/Iter";
+
 
 
 actor {
@@ -19,10 +21,40 @@ actor {
     
   };
 
-  let urls = HashMap.HashMap<Text, Nat>(0, Text.equal, Text.hash); // Let, não pode ser alterado, começa com 0 itens esse hashmap vazio
-  let idsUrl = HashMap.HashMap<Nat, UrlTree>(0, Nat.equal, Hash.hash);
+    
+
+  stable var idUrl : Nat = 0; 
+
+  /* estruturas para armazenar os dados antes e depois do upgrade de Canister */
+  stable var urlsEntries : [(Text, Nat)] = [];
+
+  stable var idsUrlEntries : [(Nat, UrlTree)] = [];
+ 
+  system func preupgrade() {
+    urlsEntries := Iter.toArray(urls.entries());
+    idsUrlEntries := Iter.toArray(idsUrl.entries());
+    
+  };
+
+  system func postupgrade() {
+    
+    //urls := HashMap.fromEntries(urlsEntries.vals(), Text.equal, Text.hash);
+    urls := HashMap.fromIter<Text, Nat>(urlsEntries.vals(), 0, Text.equal, Text.hash);
+
+    urlsEntries := [];
+
+    //idsUrl := HashMap.fromEntries(idsUrlEntries.vals(), Nat.equal, Hash.hash);
+    idsUrl := HashMap.fromIter<Nat, UrlTree>(idsUrlEntries.vals(), 0, Nat.equal, Hash.hash);
+
+    idsUrlEntries := [];
+  };
+
+  /* fim */
+
+  var urls = HashMap.HashMap<Text, Nat>(0, Text.equal, Text.hash); // Let, não pode ser alterado, começa com 0 itens esse hashmap vazio
+
+  var idsUrl = HashMap.HashMap<Nat, UrlTree>(0, Nat.equal, Hash.hash);
   
-  var idUrl : Nat = 0; 
 
   public shared (msg) func adicionarUrlTree( nomeUrl: Text, linkLinkedin: Text, linkGithub: Text, linkInstagram: Text, linkDiscord: Text ) : async Nat {
 
