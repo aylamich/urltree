@@ -4,7 +4,7 @@ import { Actor } from "@dfinity/agent";
 import { AuthClient } from "@dfinity/auth-client";
 
 
-function App() {
+function index() {
 
   const [isCarregando, setCarregando] = useState(false);
   
@@ -101,4 +101,4 @@ function App() {
   );
 }
 
-export default App;
+export default index;
