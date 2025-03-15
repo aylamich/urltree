@@ -2,6 +2,10 @@
 
 URLTREE é uma plataforma descentralizada para consolidar todos os seus links em um único lugar, proporcionando praticidade e segurança na Web3.
 
+## 🌍 Link de Acesso
+
+Acesse o URLTREE na Mainnet: https://e5yuu-3aaaa-aaaae-qcuia-cai.icp0.io/
+
 ## ✨ Tecnologias Utilizadas
 
 - **Motoko** - Lógica e contratos inteligentes na blockchain ICP

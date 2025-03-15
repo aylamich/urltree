@@ -50,7 +50,7 @@ console.log("ID URL: ", idUrl);
         // Primeiro, tentamos adicionar uma nova URL
         const resultadoAdicionar = await urltree_backend.adicionarUrlTree(nomeUrl, linkLinkedin, linkGithub, linkInstagram, linkDiscord);
         setIdUrl(resultadoAdicionar);
-        setLinkUrl("https://y4oop-liaaa-aaaab-qacha-cai.icp0.io/url/"+ resultadoAdicionar);
+        setLinkUrl("https://e5yuu-3aaaa-aaaae-qcuia-cai.icp0.io/url/"+ resultadoAdicionar);
         // + resultadoAdicionar
          setMostrarModal(true);
     } else {
@@ -64,7 +64,7 @@ console.log("ID URL: ", idUrl);
                                                                                    linkInstagram,
                                                                                    linkDiscord
                                                                           );
-      setLinkUrl("https://66ete-hqaaa-aaaab-qacrq-cai.icp0.io/url/" + idUrl);
+      setLinkUrl("https://e5yuu-3aaaa-aaaae-qcuia-cai.icp0.io/url/" + idUrl);
 
       if (resultadoEditar === null) {
          alert('Não foi possível editar a URL. Verifique se você é o proprietário.');
